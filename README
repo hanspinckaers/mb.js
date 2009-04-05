@@ -1,142 +1,21 @@
-	<h3>The syntax</h3>
-<p>First the syntax to call the function. I use this code to draw the backgrounds behind the header in this site:</p>
+The canvas HTML element was invented by Apple. It was created to dynamically create complex images for Widgets. There where a few complains about the element, but despite of that it is included in the HTML 5.0 working draft. All modern browsers are compatible with the canvas-tag, beside of Internet Explorer, but Google created a superb piece of javascript that ported the canvas-tag to IE. I created a little piece of javascript for drawing multiple backgrounds in a canvas element behind an HTML element. 
 
-<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">$mb<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#91;</span><span style="color: #3366CC;">'info'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span>
-	<span style="color: #009900;">&#91;</span><span style="color: #3366CC;">'url(http://hanspinckaers.com/img/mainBackgroundTop2.png) no-repeat 8px top'</span><span style="color: #339933;">,</span>
-	<span style="color: #3366CC;">'url(http://hanspinckaers.com/img/achtergrondHoofdartikel.jpg) no-repeat 8px bottom'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></div></div>
+The syntax
 
-<h3>Explaining the code</h3>
-<p>I&#8217;m going to explain the code, so you know how it works and maybe make some improvements.</p>
+$mb(['id1','id2','id3'],
+	['url(background1.png) no-repeat 8px top',
+	'url(background2.png) no-repeat 8px bottom']);	
+	
+It should be pretty straight-forward.
 
-<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #003366; font-weight: bold;">function</span> $mb<span style="color: #009900;">&#40;</span>elid<span style="color: #339933;">,</span> css<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-	<span style="color: #000066; font-weight: bold;">for</span><span style="color: #009900;">&#40;</span>z<span style="color: #339933;">=</span><span style="color: #CC0000;">0</span><span style="color: #339933;">;</span>z <span style="color: #339933;">&lt;</span> elid.<span style="color: #660066;">length</span><span style="color: #339933;">;</span> z<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//get the destination element</span>
-	<span style="color: #003366; font-weight: bold;">var</span> el <span style="color: #339933;">=</span> document.<span style="color: #660066;">getElementById</span><span style="color: #009900;">&#40;</span>elid<span style="color: #009900;">&#91;</span>z<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//create the canvas element</span>
-	<span style="color: #003366; font-weight: bold;">var</span> canvas <span style="color: #339933;">=</span> document.<span style="color: #660066;">createElement</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'canvas'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//set all properties of the canvas element,</span>
-	<span style="color: #006600; font-style: italic;">//so it sits behind the destination element</span>
-	canvas.<span style="color: #660066;">id</span> <span style="color: #339933;">=</span> elid<span style="color: #009900;">&#91;</span>z<span style="color: #009900;">&#93;</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'_canvas'</span><span style="color: #339933;">;</span>
-	canvas.<span style="color: #660066;">style</span>.<span style="color: #660066;">position</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">'absolute'</span><span style="color: #339933;">;</span>
-	canvas.<span style="color: #660066;">height</span> <span style="color: #339933;">=</span> el.<span style="color: #660066;">offsetHeight</span><span style="color: #339933;">;</span>
-	canvas.<span style="color: #660066;">width</span> <span style="color: #339933;">=</span> el.<span style="color: #660066;">offsetWidth</span><span style="color: #339933;">;</span>
-	canvas.<span style="color: #660066;">style</span>.<span style="color: #660066;">top</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">'0px'</span><span style="color: #339933;">;</span>
-	canvas.<span style="color: #660066;">style</span>.<span style="color: #660066;">left</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">'0px'</span><span style="color: #339933;">;</span>
-	canvas.<span style="color: #660066;">style</span>.<span style="color: #660066;">zIndex</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">'0'</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//create a div element, so that the</span>
-	<span style="color: #006600; font-style: italic;">//content will not be hidden behind the canvas element</span>
-	<span style="color: #003366; font-weight: bold;">var</span> div <span style="color: #339933;">=</span> document.<span style="color: #660066;">createElement</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'div'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	div.<span style="color: #660066;">style</span>.<span style="color: #660066;">zIndex</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">'1'</span><span style="color: #339933;">;</span>
-	div.<span style="color: #660066;">style</span>.<span style="color: #660066;">position</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">'relative'</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//put all childNodes in this div</span>
-	<span style="color: #003366; font-weight: bold;">var</span> length <span style="color: #339933;">=</span> el.<span style="color: #660066;">childNodes</span>.<span style="color: #660066;">length</span><span style="color: #339933;">;</span>
-	el.<span style="color: #660066;">appendChild</span><span style="color: #009900;">&#40;</span>div<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #000066; font-weight: bold;">for</span><span style="color: #009900;">&#40;</span>y<span style="color: #339933;">=</span><span style="color: #CC0000;">0</span><span style="color: #339933;">;</span> y <span style="color: #339933;">&amp;</span>lt<span style="color: #339933;">;</span> length<span style="color: #339933;">;</span> y<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-		div.<span style="color: #660066;">appendChild</span><span style="color: #009900;">&#40;</span>el.<span style="color: #660066;">firstChild</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span></pre></div></div>
+Examples
 
-<p>Then comes the code which initializes the excanvas object, the canvas-element for Internet Explorer.</p>
+You can see a simple example with rounded corners at http://hanspinckaers.com/mb/
+W3C weblog multiple backgrounds example with mb.js (css3.info) http://hanspinckaers.com/mb/test2.html
 
-<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">	<span style="color: #006600; font-style: italic;">// dynamical initialize canvas for internet explorer</span>
-	<span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #009966; font-style: italic;">/msie/i</span>.<span style="color: #660066;">test</span><span style="color: #009900;">&#40;</span>navigator.<span style="color: #660066;">userAgent</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-&nbsp;
-	    el.<span style="color: #660066;">appendChild</span><span style="color: #009900;">&#40;</span>canvas<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	    G_vmlCanvasManager.<span style="color: #660066;">initElement</span><span style="color: #009900;">&#40;</span>canvas<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	    canvas <span style="color: #339933;">=</span> document.<span style="color: #660066;">getElementById</span><span style="color: #009900;">&#40;</span>elid<span style="color: #009900;">&#91;</span>z<span style="color: #009900;">&#93;</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'_canvas'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>	
-&nbsp;
-	<span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
-		<span style="color: #006600; font-style: italic;">// append the element with the canvas element</span>
-		el.<span style="color: #660066;">appendChild</span><span style="color: #009900;">&#40;</span>canvas<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-	<span style="color: #009900;">&#125;</span></pre></div></div>
+Points of improvements
 
-<p>Mark-up fanatist be warned. The script is creating two divs inside the destination element. If your begin markup is something like this:</p>
-
-<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;div id=&quot;header&quot;&gt;
-&lt;p&gt;some text&lt;/p&gt;
-&lt;/div&gt;</pre></div></div>
-
-<p>It will result in this:</p>
-
-<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;div id=&quot;header&quot;&gt;
-&lt;div style=&quot;z-index: 1; position: relative;&quot;&gt;
-&lt;p&gt;some text&lt;/p&gt;
-&lt;/div&gt;
-&lt;canvas width=&quot;200&quot; height=&quot;12&quot; style=&quot;position: absolute; top: 0px; left: 0px; z-index: 0;&quot; id=&quot;header_canvas&quot;&gt;&lt;/canvas&gt;
-&lt;/div&gt;</pre></div></div>
-
-<p>Now heres where the magic starts:</p>
-
-<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">	<span style="color: #006600; font-style: italic;">//create the image array</span>
-	<span style="color: #003366; font-weight: bold;">var</span> imgs <span style="color: #339933;">=</span> <span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//create the rexex to find the url in the css</span>
-	<span style="color: #003366; font-weight: bold;">var</span> regex <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">new</span> RegExp<span style="color: #009900;">&#40;</span><span style="color: #009966; font-style: italic;">/url((.*))/</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//for every background</span>
-	<span style="color: #000066; font-weight: bold;">for</span><span style="color: #009900;">&#40;</span>x<span style="color: #339933;">=</span><span style="color: #CC0000;">0</span><span style="color: #339933;">;</span>x <span style="color: #339933;">&amp;</span>lt<span style="color: #339933;">;</span> css.<span style="color: #660066;">length</span><span style="color: #339933;">;</span> x<span style="color: #339933;">++</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-		<span style="color: #006600; font-style: italic;">//create new image</span>
-		imgs<span style="color: #009900;">&#91;</span>x<span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">new</span> Image<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-		<span style="color: #006600; font-style: italic;">//give image a drawme function</span>
-		imgs<span style="color: #009900;">&#91;</span>x<span style="color: #009900;">&#93;</span>.<span style="color: #660066;">drawme</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-			<span style="color: #006600; font-style: italic;">//if image is already loaded, draw it.</span>
-			<span style="color: #000066; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #660066;">complete</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-				<span style="color: #006600; font-style: italic;">//$css translates the css into a javascript object</span>
-				<span style="color: #003366; font-weight: bold;">var</span> cssbg <span style="color: #339933;">=</span> $css<span style="color: #009900;">&#40;</span>css<span style="color: #009900;">&#91;</span>imgs.<span style="color: #660066;">indexOf</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-				<span style="color: #006600; font-style: italic;">//$draw draws it into the canvas</span>
-				$draw<span style="color: #009900;">&#40;</span>el<span style="color: #339933;">,</span> cssbg<span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-				<span style="color: #006600; font-style: italic;">//call the next image</span>
-				<span style="color: #003366; font-weight: bold;">var</span> prev <span style="color: #339933;">=</span> imgs.<span style="color: #660066;">indexOf</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">-</span><span style="color: #CC0000;">1</span><span style="color: #339933;">;</span>
-&nbsp;
-				<span style="color: #000066; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>prev <span style="color: #339933;">&amp;</span>gt<span style="color: #339933;">;</span> <span style="color: #CC0000;">0</span> <span style="color: #339933;">||</span> prev <span style="color: #339933;">==</span> <span style="color: #CC0000;">0</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-					imgs<span style="color: #009900;">&#91;</span>prev<span style="color: #009900;">&#93;</span>.<span style="color: #660066;">drawme</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-				<span style="color: #009900;">&#125;</span>
-			<span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
-&nbsp;
-				<span style="color: #006600; font-style: italic;">//if image is not loaded give it the draw function</span>
-				<span style="color: #000066; font-weight: bold;">this</span>.<span style="color: #000066;">onload</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-&nbsp;
-					<span style="color: #003366; font-weight: bold;">var</span> cssbg <span style="color: #339933;">=</span> $css<span style="color: #009900;">&#40;</span>css<span style="color: #009900;">&#91;</span>imgs.<span style="color: #660066;">indexOf</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-					$draw<span style="color: #009900;">&#40;</span>el<span style="color: #339933;">,</span> cssbg<span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-					<span style="color: #003366; font-weight: bold;">var</span> prev <span style="color: #339933;">=</span> imgs.<span style="color: #660066;">indexOf</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">this</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">-</span><span style="color: #CC0000;">1</span><span style="color: #339933;">;</span>
-&nbsp;
-					<span style="color: #000066; font-weight: bold;">if</span><span style="color: #009900;">&#40;</span>prev <span style="color: #339933;">&amp;</span>gt<span style="color: #339933;">;</span> <span style="color: #CC0000;">0</span> <span style="color: #339933;">||</span> prev <span style="color: #339933;">==</span> <span style="color: #CC0000;">0</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
-						imgs<span style="color: #009900;">&#91;</span>prev<span style="color: #009900;">&#93;</span>.<span style="color: #660066;">drawme</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-					<span style="color: #009900;">&#125;</span>
-&nbsp;
-				<span style="color: #009900;">&#125;</span> <span style="color: #006600; font-style: italic;">//end onload function</span>
-&nbsp;
-			<span style="color: #009900;">&#125;</span><span style="color: #006600; font-style: italic;">//end if</span>
-		<span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span> <span style="color: #006600; font-style: italic;">//end function</span>
-&nbsp;
-		imgs<span style="color: #009900;">&#91;</span>x<span style="color: #009900;">&#93;</span>.<span style="color: #660066;">src</span> <span style="color: #339933;">=</span> regex.<span style="color: #660066;">exec</span><span style="color: #009900;">&#40;</span>css<span style="color: #009900;">&#91;</span>x<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#91;</span><span style="color: #CC0000;">1</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span> <span style="color: #006600; font-style: italic;">//load the image	</span>
-&nbsp;
-	<span style="color: #009900;">&#125;</span> <span style="color: #006600; font-style: italic;">//end for loop</span>
-&nbsp;
-	<span style="color: #006600; font-style: italic;">//start loop by drawing first image</span>
-	imgs<span style="color: #009900;">&#91;</span>css.<span style="color: #660066;">length</span> <span style="color: #339933;">-</span> <span style="color: #CC0000;">1</span><span style="color: #009900;">&#93;</span>.<span style="color: #660066;">drawme</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-&nbsp;
-	<span style="color: #009900;">&#125;</span></pre></div></div>
-
-<p>If you want to now how the functions $css and $draw work you can read the source.</p>
-<h3>Examples</h3>
-<ul>
-<li>This page is an example, see the first paragraph of this post (the red background)</li>
-<li>You can see a simple example with rounded corners <a href="http://hanspinckaers.com/mb/">here</a></li>
-<li><a href="http://hanspinckaers.com/mb/test2.html">W3C weblog multiple backgrounds example with mb.js</a></li>
-</ul>
-<h3>Points of improvements</h3>
-<ul>
-<li>Maybe convert it into a class</li>
-<li>Speed (always a good one to improve)</ok>
-<li>Destination element must have an absolute or relative position declared in his css</li>
-</ul>
+- It’s buggy
+- Maybe convert it into a class</li>
+- Speed (always a good one to improve)</ok>
+- Destination element must have an absolute or relative position declared in his css
