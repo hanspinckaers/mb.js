@@ -15,7 +15,7 @@ W3C weblog multiple backgrounds example with mb.js (css3.info) http://hanspincka
 
 Points of improvements
 
-- It’s buggy (please report them)
+- It's buggy (please report them)
 - Maybe convert it into a class
 - Speed (always a good one to improve)
 - Destination element must have an absolute or relative position declared in his css
