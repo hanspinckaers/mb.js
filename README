@@ -1,6 +1,6 @@
 The canvas HTML element was invented by Apple. It was created to dynamically create complex images for Widgets. There where a few complains about the element, but despite of that it is included in the HTML 5.0 working draft. All modern browsers are compatible with the canvas-tag, beside of Internet Explorer, but Google created a superb piece of javascript that ported the canvas-tag to IE. I created a little piece of javascript for drawing multiple backgrounds in a canvas element behind an HTML element. 
 
-<b>The syntax</b>
+The syntax
 
 $mb(['id1','id2','id3'],
 	['url(background1.png) no-repeat 8px top',
@@ -8,12 +8,12 @@ $mb(['id1','id2','id3'],
 	
 It should be pretty straight-forward.
 
-<b>Examples</b>
+Examples
 
 You can see a simple example with rounded corners at http://hanspinckaers.com/mb/
 W3C weblog multiple backgrounds example with mb.js (css3.info) http://hanspinckaers.com/mb/test2.html
 
-<b>Points of improvements</b>
+Points of improvements
 
 - It’s buggy
 - Maybe convert it into a class</li>
