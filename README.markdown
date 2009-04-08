@@ -16,6 +16,7 @@ Also add the javascript in your html:
 >	<script type="text/javascript" charset="utf-8" src="changed_excanvas_compressed.js"></script> 
 > <![endif]-->
 > < script type="text/javascript" charset="utf-8" src="mbmin.js"></script>
+(remove the space in "< script")
 
 Examples
 ---------
@@ -37,6 +38,8 @@ You have to add these lines before you call the $mb funtion:
 > 	<script type="text/javascript" charset="utf-8" src="changed_excanvas-compressed.js"></script> 
 > <![endif]-->
 > < script type="text/javascript" charset="utf-8" src="mbmin.js"></script> 
+
+(remove the space "< script")
 
 I modified [Zone naming: Excanvas](
 http://code.google.com/p/explorercanvas/) so it is smaller, but it can only be used to draw images.
