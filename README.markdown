@@ -15,7 +15,7 @@ Also add the javascript in your html:
 > <!--[if IE]>
 >	<script type="text/javascript" charset="utf-8" src="changed_excanvas_compressed.js"></script> 
 > <![endif]-->
-> <script type="text/javascript" charset="utf-8" src="mbmin.js"></script>
+> < script type="text/javascript" charset="utf-8" src="mbmin.js"></script>
 
 Examples
 ---------
@@ -36,7 +36,7 @@ You have to add these lines before you call the $mb funtion:
 > <!--[if IE]>
 > 	<script type="text/javascript" charset="utf-8" src="changed_excanvas-compressed.js"></script> 
 > <![endif]-->
-> <script type="text/javascript" charset="utf-8" src="mbmin.js"></script> 
+> < script type="text/javascript" charset="utf-8" src="mbmin.js"></script> 
 
 I modified [Zone naming: Excanvas](
 http://code.google.com/p/explorercanvas/) so it is smaller, but it can only be used to draw images.
