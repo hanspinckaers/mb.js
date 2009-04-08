@@ -13,9 +13,9 @@ It should be pretty straight-forward.
 
 Also add the javascript in your html:
 &lt;!--[if IE]>
-	&lt;script type="text/javascript" charset="utf-8" src="changed_excanvas_compressed.js"></script> 
+	&lt;script type="text/javascript" charset="utf-8" src="changed_excanvas_compressed.js">&lt;/script> 
 &lt;![endif]-->
-&lt;script type="text/javascript" charset="utf-8" src="mbmin.js"></script>
+&lt;script type="text/javascript" charset="utf-8" src="mbmin.js">&lt;/script>
 
 Examples
 ---------
