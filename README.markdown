@@ -16,6 +16,7 @@ Also add the javascript in your html:
 >	<script type="text/javascript" charset="utf-8" src="changed_excanvas_compressed.js"></script> 
 > <![endif]-->
 > < script type="text/javascript" charset="utf-8" src="mbmin.js"></script>
+
 (remove the space in "< script")
 
 Examples
