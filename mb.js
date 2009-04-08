@@ -28,8 +28,7 @@ function $mb(elid, css){
 	if (/msie/i.test(navigator.userAgent)){
 		el.appendChild(canvas);			
 	    G_vmlCanvasManager.initElement(canvas);
-	    canvas = document.getElementById(elid[z] + '_canvas');	
-	
+	    canvas = document.getElementById(elid[z] + '_canvas');			
 	} else {
 		el.appendChild(canvas);			
 	}

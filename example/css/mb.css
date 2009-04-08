@@ -1,8 +1,14 @@
+/* @override http://hanspinckaers.com/mb/example/css/mb.css */
+
 body 
 {
 	padding : 10px;
 	margin :0px;
 	font : 12px/18px "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+h1{
+	margin: 0;
 }
 
 p
@@ -29,3 +35,5 @@ a:hover
 {
 	text-decoration : underline;
 }
+pre {margin:1.5em 0;white-space:pre;}
+pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
