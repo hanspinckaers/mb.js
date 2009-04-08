@@ -5,17 +5,17 @@ The canvas HTML element was invented by Apple. It was created to dynamically cre
 
 The syntax
 ----------
-> $mb(['id1','id2','id3'],
-> 	['url(background1.png) no-repeat 8px top',
-> 	'url(background2.png) no-repeat 8px bottom']);	
+$mb(['id1','id2','id3'],
+ 	['url(background1.png) no-repeat 8px top',
+ 	'url(background2.png) no-repeat 8px bottom']);	
 	
 It should be pretty straight-forward.
 
 Also add the javascript in your html:
-<!--[if IE]>
-	<script type="text/javascript" charset="utf-8" src="changed_excanvas_compressed.js"></script> 
-<![endif]-->
-<script type="text/javascript" charset="utf-8" src="mbmin.js"></script>
+&lt;!--[if IE]>
+	&lt;script type="text/javascript" charset="utf-8" src="changed_excanvas_compressed.js"></script> 
+&lt;![endif]-->
+&lt;script type="text/javascript" charset="utf-8" src="mbmin.js"></script>
 
 Examples
 ---------
@@ -33,10 +33,10 @@ Using it
 ---------
 You have to add these lines before you call the $mb funtion:
 
-> <!--[if IE]>
-> 	<script type="text/javascript" charset="utf-8" src="changed_excanvas-compressed.js"></script> 
-> <![endif]-->
-> <script type="text/javascript" charset="utf-8" src="mbmin.js"></script> 
+&lt;!--[if IE]>
+ 	&lt;script type="text/javascript" charset="utf-8" src="changed_excanvas-compressed.js"></script> 
+ 	&lt;![endif]-->
+&lt;script type="text/javascript" charset="utf-8" src="mbmin.js"></script> 
 
 I modified [Zone naming: Excanvas](
 http://code.google.com/p/explorercanvas/) so it is smaller, but it can only be used to draw images.
