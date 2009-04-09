@@ -23,6 +23,7 @@ Examples
 ---------
 You can see a simple example with rounded corners at http://hanspinckaers.com/mb/
 W3C weblog multiple backgrounds example with mb.js (css3.info) http://hanspinckaers.com/mb/test2.html
+
 Points of improvements
 ----------------------
 - It's buggy (please report them)
