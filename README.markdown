@@ -31,16 +31,5 @@ Points of improvements
 - Speed (always a good one to improve)
 - Destination element must have an absolute or relative position declared in his css
 
-Using it
----------
-You have to add these lines before you call the $mb funtion:
-
-> <!--[if IE]>
-> 	<script type="text/javascript" charset="utf-8" src="changed_excanvas-compressed.js"></script> 
-> <![endif]-->
-> < script type="text/javascript" charset="utf-8" src="mbmin.js"></script> 
-
-(remove the space "< script")
-
-I modified [Zone naming: Excanvas](
+I modified [Excanvas](
 http://code.google.com/p/explorercanvas/) so it is smaller, but it can only be used to draw images.
