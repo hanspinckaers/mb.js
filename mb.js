@@ -1,18 +1,18 @@
 function MB(elid, css, positioning, onresize){
 	if(typeof elid == "string") elid = new Array(elid);
 
-	if(this.mbSupport()){
-		for(z=0;z < elid.length; z++){
-   	 		if(typeof elid[z] == "string") el = document.getElementById(elid[z]);
-   	 		else el = elid[z];
-   	 	
-			var color = this.getComputedStyle(el, 'backgroundColor');
-			el.style.background = css.join(', ');
-			el.style.backgroundColor = color;
-		}
-		return true;
-	} 
-	
+//	if(this.mbSupport()){
+//		for(z=0;z < elid.length; z++){
+//   	 		if(typeof elid[z] == "string") el = document.getElementById(elid[z]);
+//   	 		else el = elid[z];
+//   	 	
+//			var color = this.getComputedStyle(el, 'backgroundColor');
+//			el.style.background = css.join(', ');
+//			el.style.backgroundColor = color;
+//		}
+//		return true;
+//	} 
+//	
 	for(z=0;z < elid.length; z++){
    	 	var canvas = document.createElement('canvas');
    	 	
