@@ -4,7 +4,7 @@ body
 {
 	padding : 10px;
 	margin :0px;
-	font : 12px/18px "Lucida Grande", Lucida, Verdana, sans-serif;
+	font : 12px/18px "Lucida Grande", Lucida, Verdana, sans-serif;	
 }
 
 h1{
@@ -17,11 +17,10 @@ p
 }
 
 #example {
-	position : relative;
-	margin : 0 auto;
-	width  : 500px;
+	width  : 80%;
 	padding : 20px;	
 	background: #CCEAEC;
+	position: relative;
 }
 
 a
@@ -30,10 +29,14 @@ a
 	color : #585DED;
 	font-weight : bold;
 }
-
+canvas{
+	margin: 0px;
+	padding: 0px;	
+}
 a:hover
 {
 	text-decoration : underline;
 }
 pre {margin:1.5em 0;white-space:pre;}
 pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
+

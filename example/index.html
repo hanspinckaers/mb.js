@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>CSS Ruler| Transcending CSS</title>
+<title>Multiple backgrounds drawn using canvas</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 
 
@@ -12,30 +12,22 @@
 
 <script type="text/javascript" charset="utf-8" src="../mb.js"></script> 
 	
-	
 <link rel="stylesheet" href="css/mb.css" type="text/css" media="screen" />
-
 <script type="text/javascript" charset="utf-8">
 
-//here's the magic
-function load(){
-	
-	$mb(
-		['example'], 
-		[
-			'url(img/top_left.gif) top left no-repeat',
-			'url(img/top_right.gif) top right no-repeat',
-			'url(img/bottom_right.gif) bottom right no-repeat', 
-			'url(img/bottom_left.gif) bottom left no-repeat', 
-			'url(img/grad.gif) top left repeat-x'
-		]
+window.onload = function(){
+	new MB(
+		'example', 
+		['url(img/top_left.gif) top left no-repeat', 'url(img/top_right.gif) top right no-repeat',
+		'url(img/bottom_right.gif) bottom right no-repeat', 'url(img/bottom_left.gif) bottom left no-repeat', 
+		'url(img/grad.gif) top left repeat-x'], null , true
 	);
-	
 }
 </script>
 
+
 </head>
-<body onload="load();">
+<body>
 
 <div id="example" >
 	
@@ -75,6 +67,7 @@ W3C weblog multiple backgrounds example with mb.js (css3.info) http://hanspincka
 <p>I modified excanvas(http://code.google.com/p/explorercanvas/) so it is smaller, but it can only be used to draw images.</p>
 
 </div>
+
 
 
 </body>

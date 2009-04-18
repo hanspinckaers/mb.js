@@ -1,225 +1,337 @@
-function $mb(elid, css){
+function MB(elid, css, positioning, onresize){
+	if(typeof elid == "string") elid = new Array(elid);
+
+	if(this.mbSupport()){
+		for(z=0;z < elid.length; z++){
+   	 		if(typeof elid[z] == "string") el = document.getElementById(elid[z]);
+   	 		else el = elid[z];
+   	 	
+			var color = this.getComputedStyle(el, 'backgroundColor');
+			el.style.background = css.join(', ');
+			el.style.backgroundColor = color;
+		}
+		return true;
+	} 
 	
 	for(z=0;z < elid.length; z++){
-	
-	var el = document.getElementById(elid[z]);
-	var canvas = document.createElement('canvas');
-		
-	canvas.id = elid[z] + '_canvas';
-	canvas.style.position = 'absolute';
-	canvas.height = el.offsetHeight;	
-	canvas.width = el.offsetWidth;
-	canvas.style.top = '0px';
-	canvas.style.left = '0px';
-	canvas.style.zIndex = '0';
-			
-	var div = document.createElement('div');
-	div.style.zIndex = '1';
-	div.style.position = 'relative';
-	
-	var length = el.childNodes.length;
-	el.appendChild(div);
-			
-	for(y=0; y < length; y++){		
-		div.appendChild(el.firstChild);
-	}		
-	
-	// dynamical initialize canvas
-	if (/msie/i.test(navigator.userAgent)){
-		el.appendChild(canvas);			
-	    G_vmlCanvasManager.initElement(canvas);
-	    canvas = document.getElementById(elid[z] + '_canvas');			
-	} else {
-		el.appendChild(canvas);			
-	}
+   	 	var canvas = document.createElement('canvas');
+   	 	
+   	 	if(typeof elid[z] == "string") el = document.getElementById(elid[z]);
+   	 	else el = elid[z];
 
-	var imgs = [];
-
-	var regex = new RegExp(/url\((.*)\)/); 
-	
-	for(x=0;x < css.length; x++){
-		imgs[x] = new Image();
-		
-		imgs[x].drawme = function(){
-			
-			if(this.complete){
+	   	canvas.id = '_canvas';
 				
-				var cssbg = $css(css[imgs.indexOf(this)]);
-						
-				$draw(el, cssbg, this);
-											
-				var prev = imgs.indexOf(this)-1;
+		var css = css;
+		var height = this.getComputedStyle(el, "position");
+		var paddingTop = this.getComputedStyle(el, "paddingTop");
+		var paddingLeft = this.getComputedStyle(el, "paddingLeft");
+		var position = this.getComputedStyle(el, "position");
+		var backgroundcolor = this.getComputedStyle(el, "backgroundColor");
+   	 	
+		var length = el.childNodes.length;
+		
+		//check if there is already a canvas
+		for(y=0; y < length; y++){		
+			if(el.childNodes[y].id == '_canvas'){ 
+				canvas = el.childNodes[y];
+				var canvasAlreadySet = true;
+			}
+		}
+				
+		if(positioning == 'relative'){
+			canvas.style.position = 'relative';
+			canvas.width = el.offsetWidth;
+			canvas.height = el.offsetHeight;
 			
+			canvas.style.top = -height - paddingTop + 'px';
+			canvas.style.left = -paddingLeft + 'px';
+			canvas.style.marginBottom = -(height + paddingTop) + 'px'; 
+			//eigenlijk ook nog -paddingBottom maar wil niet.
+			el.style.height = height + 'px';
+			
+		} else {
+			
+			if(position == '' && position != 'fixed' || position == 'static') el.style.position = 'relative';	
+
+			canvas.style.position = 'absolute';
+			canvas.width = el.offsetWidth;
+			canvas.height = el.offsetHeight;
+			
+			canvas.style.top = '0px';
+			canvas.style.left = '0px';
+			
+		}
+
+		canvas.style.zIndex = '0';
+
+		if(!canvasAlreadySet){
+			var div = document.createElement('div');
+			div.style.zIndex = '1';
+			div.style.position = 'relative';
+			
+			var length = el.childNodes.length;
+			el.appendChild(div);
+					
+			for(y=0; y < length; y++){		
+				div.appendChild(el.firstChild);
+			}						
+	
+			// dynamical initialize canvas
+			if (/msie/i.test(navigator.userAgent)){
+				el.appendChild(canvas);	
+				G_vmlCanvasManager.initElement(canvas);
+				
+				//retrieve canvas, otherwise it won't work
+				for(y=0; y < length; y++){	
+					if(el.childNodes[y]){	
+						if(el.childNodes[y].id == '_canvas'){ 
+							var canvas = el.childNodes[y];
+						}
+					}
+				}
+				
+			}
+		}
+			
+		var imgs = [];
+	
+		var urlRegExp = new RegExp(/url\((.*)\)/); 
+		
+		var mbclass = this;
+				
+		for(x=0;x < css.length; x++){
+			imgs[x] = new Image();
+			
+			imgs[x].drawme = function(){
+
+			if(this.complete){
+				var cssbg = mbclass.css(css[imgs.indexOf(this)]);
+
+				mbclass.draw(el, cssbg, this, canvas);
+												
+				var prev = imgs.indexOf(this)-1;
+				
 				if(prev > 0 || prev == 0){						
 					imgs[prev].drawme();
+				} else {
+					mbclass.exportToPNG(canvas, el);
 				}
-			
+				
 			} else {
 				
 				this.onload = function(){
 					
-					var cssbg = $css(css[imgs.indexOf(this)]);
+					var cssbg = mbclass.css(css[imgs.indexOf(this)]);
 
-					$draw(el, cssbg, this);
-
+					mbclass.draw(el, cssbg, this, canvas);
+	
 					var prev = imgs.indexOf(this)-1;
-
+	
 					if(prev > 0 || prev == 0){
 						imgs[prev].drawme();
+					} else {
+						mbclass.exportToPNG(canvas, el);
 					}
 					
 				} //end onload function
-				
+			
 			}//end if
-		}; //end function
+
+			} //end drawme
+			
+			imgs[x].src = urlRegExp.exec(css[x])[1];	
+					
+		} //end for loop
+			
+		//start loop
+		imgs[css.length - 1].drawme();
 		
-		imgs[x].src = regex.exec(css[x])[1]; //test	
-				
-	} //end for loop
-		
-	//start loop
-	imgs[css.length - 1].drawme();
-	
 	}
 	
+	if(onresize){
+		window.onresize = function(){
+			new MB(elid, css, positioning);
+		};
+	}
+
 }
 
-
-function $draw(el, cssbg, img){	
-		var ctx = document.getElementById(el.id + '_canvas').getContext('2d');
-		
-		var totalWidth = el.offsetWidth;
-		var totalHeight = el.offsetHeight;			
+MB.prototype.draw = function(el, cssbg, img, ctx){
+	var ctx = ctx.getContext('2d');
 	
-		if(cssbg.repeat == 'no'){
+	var totalWidth = el.offsetWidth;
+	var totalHeight = el.offsetHeight;			
 
-				var x = (cssbg.left) ? 0 :
-					(cssbg.right) ? totalWidth - img.width :
-					(cssbg.centerX) ? (totalWidth / 2) - (img.width / 2) : 
-					(cssbg.x) ? parseFloat(cssbg.x) : false;
-
-				var y = (cssbg.top) ? 0 :
-					(cssbg.bottom) ? totalHeight - img.height :
-					(cssbg.centerY) ? (totalHeight / 2) - (img.height / 2) : 
-					(cssbg.y) ? parseFloat(cssbg.y) : false;
-
-					ctx.drawImage(img,x,y,img.width,img.height);			
-			
-			return true;
-						
-		} else if(cssbg.repeat == 'y'){//end of norepeat
+	//switch statement
+	switch(cssbg.repeat){
+	
+	case 'no-repeat':
 		
-				var amount = Math.ceil(totalHeight / img.height);
-				if (amount%2 == 0) amount++;
+		var x = this.calculateX(cssbg, totalWidth, img);
+		var y = this.calculateY(cssbg, totalHeight, img);
+
+		//draw the images
+		ctx.drawImage(img,x,y,img.width,img.height);
+			
+	break;
+	
+	case 'repeat-y':							
+	
+		var amount = Math.ceil(totalHeight / img.height)+1;
 		
-				x = (cssbg.left) ? 0 :
-					(cssbg.right) ? totalWidth - img.width :
-					(cssbg.centerX) ? (totalWidth / 2) - (img.width / 2) : 
-					(cssbg.x) ? parseFloat(cssbg.x) : false;
-			
-				minus = (cssbg.top) ? 0 : 
-						(cssbg.bottom) ? amount * img.height - totalHeight :
-						(cssbg.centerY) ? (amount * img.height - totalHeight) / 2 : 
-						(cssbg.y) ? img.height - parseFloat(cssbg.y) : false;
-			
-				for (i=0;i<(amount);i++){
-						ctx.drawImage(img,x,(i * img.height) - minus,img.width,img.height);	
-				}
-				
-			return true;
-		} else if(cssbg.repeat == 'x'){
-			
-				var amount = Math.ceil(totalWidth / img.width);
-				amout = amount++;
-				
-				var minus = (cssbg.left) ? 0 :
-							(cssbg.right) ? amount * img.width - totalWidth :
-							(cssbg.centerX) ? (amount * img.width - totalWidth) / 2 : 
-							(cssbg.x) ? img.width - parseFloat(cssbg.x) : false;
-				
-				var y = (cssbg.top) ? 0 :
-						(cssbg.bottom) ? totalHeight - img.height :
-						(cssbg.centerY) ? (totalHeight / 2) - (img.height / 2) : 
-						(cssbg.y) ? parseFloat(cssbg.y) : false;
+		var x = this.calculateX(cssbg, totalWidth, img);
+		var minus = this.calculateMinusY(cssbg, totalHeight, img, amount);
+		
+		//draw the images
+		for (i=0;i<(amount);i++){
+			ctx.drawImage(img,x,(i * img.height) - minus,img.width,img.height);	
+		}
+					
+	break;
+	
+	case 'repeat-x':
+	
+		var amount = Math.ceil(totalWidth / img.width) + 1;
+		
+		var minus = this.calculateMinusX(cssbg, totalWidth, img, amount);
+		var y = this.calculateY(cssbg, totalHeight, img);
 
-				for (i=0;i<(amount);i++){
-						ctx.drawImage(img,(i * img.width) - minus,y,img.width,img.height);	
-				}
-			
-			return true;
-		} else if(cssbg.repeat = 'repeat'){
-
-				var amountx = Math.ceil(totalWidth / img.width);
-				amoutx = amountx++;
-				
-				var amounty = Math.ceil(totalHeight / img.height);
-				amouty = amounty++;
-				
-				minusx = (cssbg.left) ? 0 :
-						 (cssbg.right) ? amountx * img.width - totalWidth :
-						 (cssbg.centerX) ? (amountx * img.width - totalWidth) / 2 :
-						 (cssbg.x) ? img.width - parseFloat(cssbg.x) : false;
-
-				minusy = (cssbg.top) ? 0 : 
-						(cssbg.bottom) ? amount * img.height - totalHeight :
-						(cssbg.centerY) ? (amount * img.height - totalHeight) / 2 : 
-						(cssbg.y) ? img.height - parseFloat(cssbg.y) : false;
-
-				for (i=0;i<(amountx);i++){
-					for (j=0;j<(amounty);j++){
-						ctx.drawImage(img, (i * img.width) - minusx,(j * img.height) - minusy,img.width,img.height);
-					}	
-				}
-
-			return true;
+		//draw the images
+		for (i=0;i<(amount);i++){
+			ctx.drawImage(img,(i * img.width) - minus,y,img.width,img.height);	
 		}
 		
+	break;
+		
+	default:
+		var amountx = Math.ceil(totalWidth / img.width)+1;
+		var amounty = Math.ceil(totalHeight / img.height)+1;
+		
+		var minusx = this.calculateMinusX(cssbg, totalWidth, img, amountx);
+		var minusy = this.calculateMinusY(cssbg, totalHeight, img, amounty);
+
+		//draw the images
+		for (i=0;i<(amountx);i++){
+			for (j=0;j<(amounty);j++){
+				ctx.drawImage(img, (i * img.width) - minusx,(j * img.height) - minusy,img.width,img.height);
+			}	
+		}
+	
+	} //end of switch
+		
 }
 
-function $css(cssline){
-	var regex = new RegExp(/url\((.*)\)/); 
-  	var regexpx = new RegExp(/([\d]*)px ([\d]*)/);
+MB.prototype.css = function(cssline){
+	var css = new Object();
+	var pixels = [0,0]
+  	pixels = new RegExp(/([\d]*)px ([\d]*)/).exec(cssline);
 	
-	var cssbg = {};
-	cssbg.top = (cssline.indexOf(' top') != -1) ? true : false;
-	cssbg.bottom = (cssline.indexOf(' bottom') != -1) ? true : false;
-	cssbg.right = (cssline.indexOf(' right') != -1) ? true : false;
-	cssbg.left = (cssline.indexOf(' left') != -1) ? true : false;
+	cssline.split(" ").forEach(function(item, index, array){
+		switch(item){
+			case 'no-repeat':
+				css['repeat'] = 'no-repeat';
+			break;
+			
+			case 'repeat-x':
+				css['repeat'] = 'repeat-x';
+			break;
+			
+			case 'repeat-y':
+				css['repeat'] = 'repeat-y';
+			break;
+
+			default:
+				if(!(pixels && pixels[2]+'px') && !(pixels && pixels[1]+'px'))
+					css[item] = true;
+		}
+	});	
 	
 	//DIT IS VOOR DE PIXEL POSITIONING
-	var pixels = regexpx.exec(cssline);
-
 	if(pixels){
-		
-		if(pixels[1] && (cssbg.right || cssbg.left)){
-			cssbg.y = pixels[1];
+		if(pixels[1] && (css.right || css.left)){
+			css.y = pixels[1];
 		} else if(pixels[1] && (cssbg.top || cssbg.bottom)){
-			cssbg.x = pixels[1];
+			css.x = pixels[1];
 		} 
 	
-		if(cssline.indexOf(' center') != -1 && cssline.indexOf(' center') < pixels.index){
-			cssbg.y = pixels[1];
-		} else if(cssline.indexOf(' center') != -1 && cssline.indexOf(' center') > pixels.index){
-			cssbg.x = pixels[1];
+		if(css.center && cssline.indexOf(' center') < pixels.index){
+			css.y = pixels[1];
+		} else if(css.center && cssline.indexOf(' center') > pixels.index){
+			css.x = pixels[1];
 		}
 	
-		if(pixels[1] != "" && pixels[2] != ""){
-			cssbg.x = pixels[1];
-			cssbg.y = pixels[2];
+		if(pixels[1] && pixels[2]){
+			css.x = pixels[1];
+			css.y = pixels[2];
 		}
-	
 	}
 					
-	cssbg.centerY =  (cssline.indexOf(' center') != -1 && !cssbg.top && !cssbg.bottom && !cssbg.y) ? true : false;
-	cssbg.centerX = (cssline.indexOf(' center') != -1 && !cssbg.right && !cssbg.left && !cssbg.x) ? true : false;
+	css.centerY = (css.center && !css.top && !css.bottom && !css.y) ? true : false;
+	css.centerX = (css.center && !css.right && !css.left && !css.x) ? true : false;
 	
-	cssbg.repeat = 
-				(cssline.indexOf(' no-repeat') != -1) ? 'no' :
-				(cssline.indexOf(' repeat-y') != -1) ? 'y' :
-				(cssline.indexOf(' repeat-x') != -1) ? 'x' : 'repeat';
-	
-	cssbg.url = regex.exec(cssline)[1]; //test
+	return css;
+};
 
-	return cssbg;
-	
+MB.prototype.calculateX = function(cssbg, totalWidth, img){
+return	(cssbg.left) ? 0 :
+		(cssbg.right) ? totalWidth - img.width :
+		(cssbg.centerX) ? (totalWidth / 2) - (img.width / 2) : 
+		(cssbg.x) ? parseFloat(cssbg.x) : false;
+};
+
+MB.prototype.calculateY = function(cssbg, totalHeight, img){
+return	(cssbg.top) ? 0 :
+		(cssbg.bottom) ? totalHeight - img.height :
+		(cssbg.centerY) ? (totalHeight / 2) - (img.height / 2) : 
+		(cssbg.y) ? parseFloat(cssbg.y) : false;
+};
+
+MB.prototype.calculateMinusY = function(cssbg, totalHeight, img, amount){
+return	(cssbg.top) ? 0 : 
+		(cssbg.bottom) ? amount * img.height - totalHeight :
+		(cssbg.centerY) ? (amount * img.height - totalHeight) / 2 : 
+		(cssbg.y) ? img.height - parseFloat(cssbg.y) : false;	
+};
+
+MB.prototype.calculateMinusX = function(cssbg, totalWidth, img, amount){
+return	(cssbg.left) ? 0 :
+		(cssbg.right) ? amount * img.width - totalWidth :
+		(cssbg.centerX) ? (amount * img.width - totalWidth) / 2 : 
+		(cssbg.x) ? img.width - parseFloat(cssbg.x) : false;
+};
+
+
+MB.prototype.getComputedStyle = function(el, property){
+	if (el.currentStyle) return el.currentStyle[property];
+	var computed = document.defaultView.getComputedStyle(el, null);
+	return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
 }
+
+MB.prototype.exportToPNG = function(canvas, el){
+	try {
+		canvas.toDataURL();
+		el.style.background = backgroundcolor + ' url(' + sDataUrl  + ')';
+	} catch(err) { 
+		//canvas could trown a security error
+		//ie already appended the canvas
+		if (!/msie/i.test(navigator.userAgent))
+			el.appendChild(canvas);
+	}
+};
+
+MB.prototype.mbSupport = function(){
+   	var element = document.createElement('div');
+	element.style.background = 'url(a.png) top no-repeat, url(a.png) bottom no-repeat';
+	if(element.style.background.search(',') != -1) return true;
+	else return false;
+}
+
+Array.prototype.forEach = function(fn, bind){
+	for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
+};
+
+String.prototype.hyphenate =  function(){
+	return this.replace(/[A-Z]/g, function(match){
+		return ('-' + match.charAt(0).toLowerCase());
+	});
+};
